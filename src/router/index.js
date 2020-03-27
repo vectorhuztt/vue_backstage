@@ -1,29 +1,42 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+Vue.use(VueRouter);
 
-Vue.use(VueRouter)
-
+const Login = () => import('components/Login');
+const Home = () => import('components/Home');
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
+    {
+        path: '',
+        redirect: '/login'
+    },
+    {
+        path: '/login',
+        component: Login
+    },
+    {
+        path: '/home',
+        component: Home
+    }
+];
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
-})
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes
+});
 
-export default router
+// 拦截路由导航守卫
+router.beforeEach((to, from, next) => {
+    // to: 目的地址
+    // from: 源地址
+    // next: 放行方法
+    if (to.path === '/login') return next();
+    const tokenStr = window.sessionStorage.getItem('token');
+    if (!tokenStr) {
+        return next('/login');
+    } else {
+        next();
+    }
+});
+
+export default router;
