@@ -8,6 +8,13 @@ export function request(option, success, fail) {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
 
+        // 2. 请求拦截
+        instance.interceptors.request.use(config => {
+            config.headers.Authorization = window.sessionStorage.getItem('token')
+            console.log(config.headers);
+            return config
+        })
+
         // 2.传入对象进行网络请求
         instance(option).then(
             res => resolve(res),

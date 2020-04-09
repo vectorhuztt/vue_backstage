@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { getLoginData } from 'network/login';
+import { getLoginData } from 'network/api_url';
 export default {
     name: 'Login',
     data() {
@@ -84,11 +84,11 @@ export default {
                 if (!valid) return;
                 getLoginData(this.loginForm)
                     .then(res => {
-                        console.log(res);
-                        if (res.data.meta.status !== 200) {
+                        console.log(res.data);
+                        if (res.data.code !== 200) {
                             this.$message.error("登录信息有误")
                         }else {
-                            window.sessionStorage.setItem('token', res.data.meta.token)
+                            window.sessionStorage.setItem('token', res.data.token)
                             this.$message.success("登录成功")
                             this.$router.push('/home')
                         }

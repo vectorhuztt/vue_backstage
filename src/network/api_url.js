@@ -7,3 +7,9 @@ export function getLoginData(params) {
         data: qs.stringify(params)
     });
 }
+export function getLabelData() {
+    return request({
+        method: 'get',
+        url: 'label/'
+    })
+}
