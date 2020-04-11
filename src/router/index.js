@@ -4,6 +4,9 @@ Vue.use(VueRouter);
 
 const Login = () => import('components/Login');
 const Home = () => import('components/Home');
+const Welcom = () => import('components/Welcom');
+const Users = () => import('components/user/Users');
+const Perimission = ()=> import('components/permission/Perimission')
 const routes = [
     {
         path: '',
@@ -15,7 +18,22 @@ const routes = [
     },
     {
         path: '/home',
-        component: Home
+        component: Home,
+        redirect: '/welcom',
+        children: [
+            {
+                path: '/welcom',
+                component: Welcom
+            },
+            {
+                path: '/users',
+                component: Users
+            },
+            {
+                path: '/access',
+                component: Perimission
+            }
+        ]
     }
 ];
 

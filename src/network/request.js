@@ -7,8 +7,14 @@ export function request(option, success, fail) {
             timeout: 5000,
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
+        
+        // 2. 请求拦截  判断请求头是否加了token
+        instance.interceptors.request.use(config => {
+            config.headers.Authorization = window.sessionStorage.getItem('token')
+            return config
+        })
 
-        // 2.传入对象进行网络请求
+        // 3.传入对象进行网络请求
         instance(option).then(
             res => resolve(res),
             error => reject(error)

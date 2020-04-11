@@ -6,6 +6,69 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "10515220",
+      "name": "折叠",
+      "font_class": "hide",
+      "unicode": "e647",
+      "unicode_decimal": 58951
+    },
+    {
+      "icon_id": "14007413",
+      "name": "折叠",
+      "font_class": "show",
+      "unicode": "e8af",
+      "unicode_decimal": 59567
+    },
+    {
+      "icon_id": "7738009",
+      "name": "权限管理",
+      "font_class": "permission",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "36020",
+      "name": "goods",
+      "font_class": "goods",
+      "unicode": "e6cd",
+      "unicode_decimal": 59085
+    },
+    {
+      "icon_id": "577335",
+      "name": "订单",
+      "font_class": "dingdan",
+      "unicode": "e737",
+      "unicode_decimal": 59191
+    },
+    {
+      "icon_id": "5810229",
+      "name": "person",
+      "font_class": "users",
+      "unicode": "e7f6",
+      "unicode_decimal": 59382
+    },
+    {
+      "icon_id": "11459730",
+      "name": "数据",
+      "font_class": "data",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "11372652",
+      "name": "定位",
+      "font_class": "dingwei",
+      "unicode": "e8ae",
+      "unicode_decimal": 59566
+    },
+    {
+      "icon_id": "8106227",
+      "name": "home",
+      "font_class": "home",
+      "unicode": "e69b",
+      "unicode_decimal": 59035
+    },
+    {
       "icon_id": "929542",
       "name": "lock",
       "font_class": "lock",
