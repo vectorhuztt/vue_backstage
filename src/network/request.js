@@ -14,7 +14,18 @@ export function request(option) {
             return config
         })
 
+<<<<<<< HEAD
         // 3.传入对象进行网络请求
+=======
+        // 2. 请求拦截
+        instance.interceptors.request.use(config => {
+            config.headers.Authorization = window.sessionStorage.getItem('token')
+            console.log(config.headers);
+            return config
+        })
+
+        // 2.传入对象进行网络请求
+>>>>>>> ae9cd5c2742951eaf7a1c0655fa18e09f049b3bd
         instance(option).then(
             res => resolve(res),
             error => reject(error)
