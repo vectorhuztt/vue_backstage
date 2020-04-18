@@ -2,11 +2,11 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
-const Login = () => import('components/Login');
-const Home = () => import('components/Home');
-const Welcom = () => import('components/Welcom');
+const Login = () => import('views/Login');
+const Home = () => import('views/Home');
+const Welcom = () => import('views/Welcom');
 const Users = () => import('components/user/Users');
-const Perimission = ()=> import('components/permission/Perimission')
+const Powers = () => import('components/power/Powers');
 const routes = [
     {
         path: '',
@@ -30,8 +30,8 @@ const routes = [
                 component: Users
             },
             {
-                path: '/access',
-                component: Perimission
+                path: '/power',
+                component: Powers
             }
         ]
     }

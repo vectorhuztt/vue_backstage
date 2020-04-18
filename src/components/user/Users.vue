@@ -1,12 +1,9 @@
 <template>
     <div>
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/welcom' }"
-                >首页</el-breadcrumb-item
-            >
-            <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-            <el-breadcrumb-item>用户列表</el-breadcrumb-item>
-        </el-breadcrumb>
+        <breadcrumb>
+            <span slot="first-title">用户管理</span>
+            <span slot="second-title">用户列表</span>
+        </breadcrumb>
         <!-- 卡片区域视图 -->
         <el-card>
             <!-- 搜索栏视图 -->
@@ -20,7 +17,7 @@
                         <el-button
                             slot="append"
                             icon="el-icon-search"
-                            @click="getUsers(query_info)"
+                            @click="getUserList"
                         ></el-button>
                     </el-input>
                 </el-col>
@@ -30,66 +27,46 @@
                     >
                 </el-col>
             </el-row>
-            <el-table :data="userList" border style="width: 100%">
-                <el-table-column
-                    type="index"
-                    label="#"
-                    width="50"
-                ></el-table-column>
-                <el-table-column prop="username" label="姓名"></el-table-column>
-                <el-table-column
-                    prop="userphone"
-                    label="手机号"
-                ></el-table-column>
-                <el-table-column
-                    prop="user_email"
-                    label="邮箱"
-                ></el-table-column>
-                <el-table-column prop="user_type_name" label="角色">
-                </el-table-column>
-                <el-table-column prop="address" label="状态">
-                    <template slot-scope="scope">
-                        <el-switch
-                            v-model="scope.row.is_active"
-                            @change="changeStatus(scope.row)"
-                            active-color="#13ce66"
-                        >
-                        </el-switch>
-                    </template>
-                </el-table-column>
-                <el-table-column label="操作" width="160">
-                    <template slot-scope="scope">
+            <re-table :dataList="userList" :tableInfo="userTableInfo">
+                <template slot-scope="user" slot="is_active">
+                    <el-switch
+                        v-model="user.data.is_active"
+                        active-color="#13ce66"
+                        @change="changeStatus(user.data)"
+                    >
+                    </el-switch>
+                </template>
+                <template slot-scope="user" slot="action">
+                    <el-button
+                        type="primary"
+                        size="mini"
+                        icon="el-icon-edit"
+                        circle
+                        @click="showEditDialog(user.data.id)"
+                    ></el-button>
+                    <el-button
+                        type="danger"
+                        size="mini"
+                        icon="el-icon-delete"
+                        circle
+                        @click="removeUser(user.data.id)"
+                    ></el-button>
+                    <el-tooltip
+                        class="item"
+                        effect="dark"
+                        content="分配角色"
+                        placement="top"
+                        :enterable="false"
+                    >
                         <el-button
-                            type="primary"
+                            type="warning"
                             size="mini"
-                            icon="el-icon-edit"
+                            icon="el-icon-setting"
                             circle
-                            @click="showEditDialog(scope.row.id)"
                         ></el-button>
-                        <el-button
-                            type="danger"
-                            size="mini"
-                            icon="el-icon-delete"
-                            circle
-                            @click="removeUser(scope.row.id)"
-                        ></el-button>
-                        <el-tooltip
-                            class="item"
-                            effect="dark"
-                            content="分配角色"
-                            placement="top"
-                            :enterable="false"
-                        >
-                            <el-button
-                                type="warning"
-                                size="mini"
-                                icon="el-icon-setting"
-                                circle
-                            ></el-button>
-                        </el-tooltip>
-                    </template>
-                </el-table-column>
-            </el-table>
+                    </el-tooltip>
+                </template>
+            </re-table>
             <!-- 分页操作 -->
             <el-pagination
                 @size-change="handleSizeChange"
@@ -110,39 +87,11 @@
                 :close-on-click-modal="false"
             >
                 <!-- 内容主题区域 -->
-                <el-form
-                    :model="addForm"
-                    :rules="addFormRules"
+                <re-form
+                    :formData="addFormData"
+                    :formRules="formRules"
                     ref="addFormRef"
-                    label-width="80px"
-                    class="demo-ruleForm"
-                >
-                    <el-form-item label="用户角色" prop="user_type">
-                        <el-select
-                            v-model="addForm.user_type"
-                            placeholder="请选择用户类别"
-                        >
-                            <el-option
-                                :label="item.type_name"
-                                :value="item.id"
-                                v-for="item in user_types"
-                                :key="item.id"
-                            ></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="用户名称" prop="username">
-                        <el-input v-model="addForm.username"></el-input>
-                    </el-form-item>
-                    <el-form-item label="用户密码" prop="password">
-                        <el-input v-model="addForm.password"></el-input>
-                    </el-form-item>
-                    <el-form-item label="手机号码" prop="userphone">
-                        <el-input v-model="addForm.userphone"></el-input>
-                    </el-form-item>
-                    <el-form-item label="邮箱地址" prop="user_email">
-                        <el-input v-model="addForm.user_email"></el-input>
-                    </el-form-item>
-                </el-form>
+                ></re-form>
                 <!--  底部按钮区域 -->
                 <span slot="footer" class="dialog-footer">
                     <el-button @click="addDialog = false">取 消</el-button>
@@ -157,33 +106,11 @@
                 :visible.sync="editDialog"
                 :close-on-click-modal="false"
             >
-                <el-form
-                    :model="editForm"
-                    :rules="addFormRules"
-                    status-icon
+                <re-form
+                    :formData="editFormData"
+                    :formRules="formRules"
                     ref="editFormRef"
-                    label-width="80px"
-                >
-                    <el-form-item label="用户名">
-                        <el-input
-                            type="text"
-                            v-model="editForm.username"
-                            disabled
-                        ></el-input>
-                    </el-form-item>
-                    <el-form-item label="手机号码" prop="userphone">
-                        <el-input
-                            type="text"
-                            v-model="editForm.userphone"
-                        ></el-input>
-                    </el-form-item>
-                    <el-form-item label="邮箱地址" prop="user_email">
-                        <el-input
-                            type="text"
-                            v-model="editForm.user_email"
-                        ></el-input>
-                    </el-form-item>
-                </el-form>
+                ></re-form>
                 <span slot="footer" class="dialog-footer">
                     <el-button @click="editDialog = false">取 消</el-button>
                     <el-button type="primary" @click="updateUserData"
@@ -204,7 +131,11 @@ import {
     getUserInfo,
     DeleteUser
 } from 'network/api_url';
-import { checkPhone, checkEmail } from '@/validator/validators';
+import * as valid from 'utils/validators';
+
+import Breadcrumb from '../common/Breadcrumb';
+import ReTable from '../common/ReTable';
+import ReForm from '../common/ReForm';
 
 export default {
     name: 'Users',
@@ -227,22 +158,19 @@ export default {
             total: 0,
             userList: [],
             user_types: [],
+            userTableInfo: [
+                { title: '姓名', prop: 'username' },
+                { title: '手机', prop: 'userphone' },
+                { title: '邮箱', prop: 'user_email' },
+                { title: '状态', slot: true, name: 'is_active' },
+                { title: '操作', slot: true, name: 'action' }
+            ],
             // 控制添加用户对话框是否显示与隐藏
             addDialog: false,
             // 控制修改用户对话框是否显示与隐藏
             editDialog: false,
-            // 添加用户的表单数据
-            addForm: {
-                username: '',
-                user_type: '',
-                password: '',
-                userphone: '',
-                user_email: ''
-            },
-            // 修改用户的表单数据
-            editForm: {},
-            // 添加表单验证规则对象
-            addFormRules: {
+            // 表单验证规则
+            formRules: {
                 username: [
                     {
                         required: true,
@@ -270,16 +198,83 @@ export default {
                         trigger: 'blur'
                     },
                     { min: 11, max: 11, message: '请输入11位手机号' },
-                    { validator: checkPhone, trigger: 'blur' }
+                    { validator: valid.checkPhone, trigger: 'blur' }
                 ],
-                user_email: [{ validator: checkEmail, trigger: 'blur' }],
+                user_email: [{ validator: valid.checkEmail, trigger: 'blur' }],
                 user_type: [{ required: true, message: '请选择用户角色' }]
+            },
+            // 添加用户的表单数据
+            addFormData: {
+                formRef: 'addFormRef',
+                formFields: {
+                    username: '',
+                    password: '',
+                    userphone: '',
+                    user_email: ''
+                },
+                itemData: [
+                    {
+                        label: '用户名称',
+                        prop: 'username',
+                        name: 'username',
+                        type: 'text',
+                    },
+                    {
+                        label: '用户密码',
+                        prop: 'password',
+                        name: 'password',
+                        type: 'text',
+                    },
+                    {
+                        label: '用户手机',
+                        prop: 'userphone',
+                        name: 'userphone',
+                        type: 'text',
+                    },
+                    {
+                        label: '用户邮箱',
+                        prop: 'user_email',
+                        name: 'user_email',
+                        type: 'text',
+                    }
+                ]
+            },
+            // 修改用户的表单数据
+            editFormData: {
+                formRef: 'editFormRef',
+                formModel: {},
+                itemData: [
+                    {
+                        label: '用户名称',
+                        name: 'username',
+                        type: 'text',
+                        disable: true
+                    },
+                    {
+                        label: '用户手机',
+                        type: 'text',
+                        prop: 'userphone',
+                        name: 'userphone'
+                    },
+                    {
+                        label: '用户邮箱',
+                        type: 'text',
+                        prop: 'user_email',
+                        name: 'user_email'
+                    }
+                ]
             }
+            // 添加表单验证规则对象
         };
     },
     created() {
         this.getUserList();
         this.getUserTypeList();
+    },
+    components: {
+        Breadcrumb,
+        ReTable,
+        ReForm
     },
     methods: {
         // 获取用户列表
@@ -294,17 +289,17 @@ export default {
         // 更改页面数据个数
         handleSizeChange(newSize) {
             this.query_info.size = newSize;
-            this.getUserList(this.query_info);
+            this.getUserList();
         },
         // 处理当前所处页数
         handleCurrentChange(current_page) {
             this.query_info.page = current_page;
-            this.getUserList(this.query_info);
+            this.getUserList();
         },
         // 更改用户状态
         changeStatus(user_info) {
             let params = {
-                pk: user_info.id,
+                id: user_info.id,
                 is_active: user_info.is_active ? 1 : 0
             };
             setTimeout(() => {
@@ -327,15 +322,16 @@ export default {
         },
         // 监听添加用户对话框的关闭事件
         addDialogClosed() {
-            this.$refs.addFormRef.resetFields();
+            console.log(this.$refs);
+            this.$refs[this.addFormData.formRef].$refs.form.resetFields();
         },
         // 监听修改用户对话框的关闭事件
         editDialogClosed() {
-            this.$refs.editFormRef.resetFields();
+            this.$refs[this.editFormData.formRef].$refs.form.resetFields();
         },
         // 添加用户
         addUser() {
-            this.$refs.addFormRef.validate(valid => {
+            this.$refs[this.addFormData.formRef].$refs.form.validate(valid => {
                 if (!valid) return;
                 this.addDialog = false;
                 addUserData(this.addForm).then(res => {
@@ -359,17 +355,17 @@ export default {
                     return this.$message.error(res.data.msg);
                 }
                 this.editDialog = true;
-                this.editForm = res.data.data;
+                this.editFormData.formFields = res.data.data;
             });
         },
         // 更改用户信息
         updateUserData() {
             const params = {
-                id: this.editForm.id,
-                userphone: this.editForm.userphone,
-                user_email: this.editForm.user_email
+                id: this.editFormData.formFields.id,
+                userphone: this.editFormData.formFields.userphone,
+                user_email: this.editFormData.formFields.user_email
             };
-            this.$refs.editFormRef.validate(valid => {
+            this.$refs[this.editFormData.formRef].$refs.form.validate(valid => {
                 if (!valid) return;
                 UpdateUserInfo(params).then(res => {
                     setTimeout(() => {
@@ -394,7 +390,7 @@ export default {
                         DeleteUser({ id: user_id }).then(res => {
                             if (res.data.code !== 200)
                                 return this.$message.error(res.data.msg);
-                            this.getUserList()
+                            this.getUserList();
                             return this.$message.success(res.data.msg);
                         });
                     }, 500);
