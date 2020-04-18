@@ -36,11 +36,7 @@
 </template>
 
 <script>
-<<<<<<< HEAD:src/views/Login.vue
-import { getLoginData } from 'network/api_url.js';
-=======
 import { getLoginData } from 'network/api_url';
->>>>>>> ae9cd5c2742951eaf7a1c0655fa18e09f049b3bd:src/components/Login.vue
 export default {
     name: 'Login',
     data() {
@@ -88,12 +84,7 @@ export default {
                 if (!valid) return;
                 getLoginData(this.loginForm)
                     .then(res => {
-<<<<<<< HEAD:src/views/Login.vue
                         if (res.data.code!== 200) {
-=======
-                        console.log(res.data);
-                        if (res.data.code !== 200) {
->>>>>>> ae9cd5c2742951eaf7a1c0655fa18e09f049b3bd:src/components/Login.vue
                             this.$message.error("登录信息有误")
                         }else {
                             window.sessionStorage.setItem('token', res.data.token)

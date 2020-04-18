@@ -4,12 +4,10 @@ Vue.use(VueRouter);
 
 const Login = () => import('views/Login');
 const Home = () => import('views/Home');
-<<<<<<< HEAD
 const Welcom = () => import('views/Welcom');
 const Users = () => import('components/user/Users');
 const Powers = () => import('components/power/Powers');
-=======
->>>>>>> ae9cd5c2742951eaf7a1c0655fa18e09f049b3bd
+
 const routes = [
     {
         path: '',
