@@ -5,7 +5,7 @@
         ref="form"
         :label-width="formWidth"
         :class="formClass"
-    >
+    >   
         <el-form-item
             :label="item.label"
             :prop="item.prop"
@@ -20,6 +20,18 @@
                     >
                     </el-input>
                 </template>
+
+                <template v-if="item.type === 'textarea'">
+                    <el-input
+                        type="textarea"
+                        v-model="formData.formFields[item.name]"
+                        :disabled="item.disable"
+                        autosize
+                        placeholder="请输入内容"
+                    >
+                    </el-input>
+                </template>
+
 
                 <template v-if="item.type === 'select'">
                     <el-select

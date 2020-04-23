@@ -5,18 +5,18 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        active_path: ''
+        activePath: '',
     },
     getters: {
         getActivePath(state) {
-            return state.active_path
+            return state.activePath
         }
     },
     mutations: {
-        saveActivePath(state, activePath) {
-            window.sessionStorage.setItem('active_path', activePath)
-            state.active_path = activePath
-        }
+        saveActivePath(state, path) {
+            window.sessionStorage.setItem('active_path', path)
+            state.activePath = path
+        },        
     },
     actions: {},
     modules: {}

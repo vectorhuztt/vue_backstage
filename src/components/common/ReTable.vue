@@ -1,5 +1,10 @@
 <template>
     <el-table :data="dataList" :border="tableBoder" :style="tableStyle">
+        <el-table-column type="expand" v-if="hasExpand">
+            <template slot-scope="scope">
+                <slot name="expand" :data="scope.row"></slot>
+            </template>
+        </el-table-column>
         <el-table-column type="index" label="#" width="60"></el-table-column>
         <el-table-column
             :key="index"
@@ -36,6 +41,9 @@ export default {
         tableStyle: {
             default: 'width: 100%',
             type: String
+        },
+        hasExpand:{
+            default: false
         }
     }
 };

@@ -26,7 +26,9 @@ import {
     Select,
     Option,
     MessageBox,
-    Tag
+    Tag,
+    Loading,
+    Tree,
 } from 'element-ui';
 
 Vue.component(Button.name, Button);
@@ -54,5 +56,6 @@ Vue.component(Dialog.name, Dialog);
 Vue.component(Select.name, Select);
 Vue.component(Option.name, Option);
 Vue.component(Tag.name, Tag);
+Vue.component(Tree.name, Tree);
 Vue.prototype.$message = Message;
-Vue.prototype.$confirm = MessageBox.confirm
+Vue.prototype.$confirm = MessageBox.confirm;

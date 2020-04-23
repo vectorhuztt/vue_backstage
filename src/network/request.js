@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 export function request(option) {
     return new Promise((resolve, reject) => {
         // 1.创建axios的实例

@@ -64,3 +64,58 @@ export function DeleteUser(params) {
         params,
     });
 }
+
+export function getRolesList() {
+    return request({
+        method: 'get',
+        url: 'roles/',
+    });
+}
+
+export function removeRoleLabel(params) {
+    return request({
+        method: 'post',
+        url: 'roles/remove-label/',
+        data: qs.stringify(params)
+    });
+}
+
+export function updateRoleLabel(params) {
+    return request({
+        method: 'post',
+        url: 'roles/update-label/',
+        data: qs.stringify(params)
+    });
+}
+
+export function createRole(params) {
+    return request({
+        method: 'post',
+        url: 'roles/create-role/',
+        data: qs.stringify(params)
+    });
+}
+
+export function updateRole(params) {
+    return request({
+        method: 'post',
+        url: 'roles/update-role/',
+        data: qs.stringify(params)
+    });
+}
+
+export function deleteRole(params) {
+    return request({
+        method: 'post',
+        url: 'roles/delete-role/',
+        data: qs.stringify(params)
+    })
+}
+
+export function getRoleDetail(params) {
+    return request({
+        method: 'get',
+        url: 'roles/detail/',
+        params
+    })
+}

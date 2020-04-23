@@ -242,7 +242,7 @@ export default {
             // 修改用户的表单数据
             editFormData: {
                 formRef: 'editFormRef',
-                formModel: {},
+                formFields: {},
                 itemData: [
                     {
                         label: '用户名称',

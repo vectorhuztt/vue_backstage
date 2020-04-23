@@ -7,15 +7,16 @@ const Home = () => import('views/Home');
 const Welcom = () => import('views/Welcom');
 const Users = () => import('components/user/Users');
 const Powers = () => import('components/power/Powers');
-
+const Roles = () => import('components/power/Roles');
+const Categories = () => import('components/category/Categories');
 const routes = [
     {
         path: '',
-        redirect: '/login'
+        redirect: '/login',
     },
     {
         path: '/login',
-        component: Login
+        component: Login,
     },
     {
         path: '/home',
@@ -24,24 +25,32 @@ const routes = [
         children: [
             {
                 path: '/welcom',
-                component: Welcom
+                component: Welcom,
             },
             {
                 path: '/users',
-                component: Users
+                component: Users,
             },
             {
                 path: '/power',
-                component: Powers
+                component: Powers,
+            },
+            {
+                path: '/roles',
+                component: Roles,
+            },
+            {
+                path: '/categories',
+                component: Categories
             }
-        ]
-    }
+        ],
+    },
 ];
 
 const router = new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,
-    routes
+    routes,
 });
 
 // 拦截路由导航守卫

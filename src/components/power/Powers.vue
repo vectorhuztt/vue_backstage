@@ -43,7 +43,7 @@ export default {
             query_info: {
                 page: 1,
                 size: 5,
-                type: 'list'
+                type: 'list',
             },
             total: 0,
             labelTableInfo: [
@@ -72,7 +72,7 @@ export default {
                     return this.$message.error(res.data.msg);
                 }
                 this.labelList = res.data.data;
-                this.total = res.data.total
+                this.total = res.data.total;
             });
         },
         // 更改页面数据个数

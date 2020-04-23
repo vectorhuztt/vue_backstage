@@ -25,7 +25,7 @@
                     background-color="#424f63"
                     text-color="#fff"
                     active-text-color="#409eef"
-                    default-active="/users"
+                    :default-active="path"
                     :unique-opened="true"
                     :collapse-transition="false"
                     :router="true"
@@ -80,6 +80,11 @@ export default {
     },
     created() {
         this.getLabelList();
+    },
+    computed: {
+        path(){
+            return this.$store.state.activePath
+        }
     },
     methods: {
         logout() {
